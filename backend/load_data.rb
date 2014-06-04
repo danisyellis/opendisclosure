@@ -8,14 +8,20 @@ if ENV['LOG'] == "true"
 end
 
 URLS = {
-  'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json',
-  'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
+  'Schedule A' => 'http://data.sfgov.org/resource/q66q-d2tr.json',
+  'Summary'    => 'http://data.sfgov.org/resource/4tts-fyix.json',
+ # 'Schedule A' => 'http://data.oaklandnet.com/resource/3xq4-ermg.json?status=active',
+  # 'Summary'    => 'http://data.oaklandnet.com/resource/rsxe-vvuw.json',
 }.freeze
-
+ 
 # In order to connect, set ENV['DATABASE_URL'] to the database you wish to
 # populate
-ENV['DATABASE_URL'] ||= "sqlite3://./#{File.dirname(__FILE__)}/db.sqlite3"
-ActiveRecord::Base.establish_connection
+#ENV['DATABASE_URL'] ||= "sqlite3://./#{File.dirname(__FILE__)}/db.sqlite3"
+#ENV['DATABASE_URL'] ||= "sqlite3:backend/db.sqlite3"
+ActiveRecord::Base.establish_connection(
+  "adapter" => "sqlite3",
+  "database"  => "backend/db.sqlite3"
+  )
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each { |f| require f }
 require_relative 'schema.rb'
 
@@ -33,7 +39,8 @@ class SocrataFetcher
       url = @uri
       url.query = URI.encode_www_form(
         '$limit' => 1000,
-        '$offset' => offset
+        '$offset' => offset,
+        '$where' => "from_date>='2014-01-01T00:00:00'"
       )
 
       puts '    Downloading: ' + url.to_s
@@ -43,6 +50,7 @@ class SocrataFetcher
 
       # preparation for next loop!
       more = response.length > 0
+     # more = offset < 10000
       offset = offset + 1000
     end
   end
@@ -59,7 +67,7 @@ def parse_contributions(row)
       # Filer_ID but some names disagree
       Party::Committee.where(committee_id: row['cmte_id'])
                       .first_or_create(name: row['tran_naml'])
-
+    
     when 'IND'
       # contributor is an Individual
       full_name = row.values_at('tran_namt', 'tran_namf', 'tran_naml', 'tran_nams')
@@ -78,11 +86,14 @@ def parse_contributions(row)
                                    state: row['tran_state'],
                                    zip: row['tran_zip4'])
     end
-
-  Contribution.create(recipient: recipient,
-                      contributor: contributor,
-                      amount: row['tran_amt1'],
-                      date: row['tran_date'])
+#  puts "contributor: " + contributor.to_s
+  if contributor != nil
+    Contribution.create(recipient: recipient,
+                        contributor: contributor,
+                        amount: row['tran_amt1'],
+                        date: row['tran_date'])
+  end
+#  puts "end"
 end
 
 # Hash of:
@@ -106,20 +117,23 @@ def parse_summary(row)
 
   column = SUMMARY_LINES[row['form_type']][row['line_item']]
   value = row['amount_a']
-
-  Summary.where(party_id: row['filer_id'],
-                date: row['rpt_date'].to_date)
-         .first_or_create
-         .update_attribute(column, value)
+  if row['rpt_date'] != nil
+    Summary.where(party_id: row['filer_id'],
+                  date: row['rpt_date'].to_date)
+           .first_or_create
+           .update_attribute(column, value)
+  end
 end
 
 if __FILE__ == $0
   # ActiveRecord::Base.logger = Logger.new(STDOUT)
-
+  
   puts "Fetching Contribution data (Schedule A) from Socrata:"
   Party.transaction do #        <- speed hack for sqlite3
     SocrataFetcher.new(URLS['Schedule A']).each do |record|
-      parse_contributions(record)
+      if record['tran_naml'] != nil
+        parse_contributions(record)
+      end
     end
   end
 

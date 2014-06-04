@@ -7,11 +7,13 @@ class Party < ActiveRecord::Base
     class_name: 'Contribution'
   has_many :summaries, primary_key: :committee_id
 
+  # 6-3-14 Taylor
+  # I changed these IDs to valid IDs from the SF data set.  The "Candidate Info" has NOT been updated.  
   MAYORAL_CANDIDATE_IDS = [
-    PARKER = 1357609,
-    QUAN = 1354678,
-    SCHAAF = 1362261,
-    TUMAN = 1359017,
+    PARKER = 990028,
+    QUAN = 1362775,
+    SCHAAF = 746875,
+    TUMAN = 941562,
   ]
 
   CANDIDATE_INFO = {

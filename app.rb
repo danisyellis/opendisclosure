@@ -3,8 +3,19 @@ require 'sinatra/content_for'
 require 'active_record'
 require 'haml'
 
+# Set port for compatability with nitrous.io
+# these setting should be removed when going to production
+configure :development do
+  set :bind, '0.0.0.0'
+  set :port, 4000
+end
+
 # Load ActiveRecord models (and connect to the database)
-ActiveRecord::Base.establish_connection
+#ENV['DATABASE_URL'] ||= "sqlite3:backend/db.sqlite3"
+ActiveRecord::Base.establish_connection(
+  "adapter" => "sqlite3",
+  "database"  => "backend/db.sqlite3"
+  )
 Dir['./backend/models/*.rb'].each { |f| require f }
 
 configure do
