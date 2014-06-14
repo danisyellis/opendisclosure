@@ -224,3 +224,189 @@ ul#contributions {
   list-style: none;
 }
 
+/* ------------------- Data Visualization -------------------- */
+
+#main-container{
+    position: relative;
+    width: 850px;
+    height: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: pink;
+
+}
+
+#nav-container{
+    position: absolute;
+    top:0px;
+    left:-800px;
+    width: 850px;
+    height: 998px;
+    z-index:500;
+    background: #fff;
+
+}
+
+#nav-tab{
+    float: left;
+    width: 50px;
+    height: 100%;
+    background: yellow;
+
+
+}
+
+#nav-svg{
+    float:right;
+    width: 798px;
+    height: 100%;
+
+
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+footer{
+    width: 850px;
+    height: 100px;
+
+    background: #f0f0f0;
+    margin: 0 auto;
+
+}
+
+.tooltip{
+    position: absolute;
+    padding: 8px;
+    text-align: center;
+    left:0px;
+    top: 0px;
+    width:200px;
+    height: 150px;
+    background: #fff;
+    color:#333;
+    box-shadow: 2px 2px 3px #333;
+    opacity: 0;
+    border-radius: 5px;
+}
+
+
+/* Level Containers */
+
+.level-1,
+.level-2,
+.level-3,
+.level-4 {
+    width: 100%;
+    height: 0px;
+}
+
+.level-1 .title,
+.level-2 .title,
+.level-3 .title,
+.level-4 .title {
+    width: 100%;
+    text-align: center;
+}
+
+.level-1 .details,
+.level-2 .details,
+.level-3 .details,
+.level-4 .details {
+    width: 100%;
+    height: 100px;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+#bubble-text {
+    text-align: center;
+}
+
+
+#main {
+    width: 1200px;
+    height: 700px;
+    /*background: #f0f0f0;*/
+}
+
+#main .div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#bubble {
+    float:left;
+    width:600px;
+    height: 600px;
+
+    /*border:1px solid #333;*/
+}
+
+#map {
+    position: relative;
+    top:0px;
+    float: right;
+    width: 500px;
+    height: 500px;
+    /*border:1px solid #333;*/
+}
+
+#select {
+    text-align: center;
+}
+
+#candidate {
+    border-radius: 5px;
+    padding: 5px;
+    border:1px solid #12b3d6;
+    outline: 0px;
+    color:#fff;
+    font-weight: bold;
+    background: #12b3d6;
+}
+
+#candidate option{
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.node{
+    cursor:move;
+}
+
+.tooltip{
+    position: absolute;
+    padding: 8px;
+    text-align: center;
+    left:0px;
+    top: 0px;
+    width:200px;
+    height: 150px;
+    background: #fff;
+    color:#333;
+    box-shadow: 2px 2px 3px #333;
+    opacity: 0;
+    border-radius: 5px;
+}
+
+#legend{
+    width: 100%;
+    min-height: 50px;
+    text-align: center;
+}
+
+#legend small{
+    margin-left: 30px;
+    margin-right: 10px;
+
+}
+
+#legend span{
+    display: inline-block;
+    width: 10px;
+    height:10px;
+}

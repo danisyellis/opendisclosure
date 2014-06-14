@@ -1,0 +1,35 @@
+%section#mayoral-candidates
+  Loading data...
+
+%section
+  %h2 Charts
+  #charts
+
+- content_for :sidebar do
+  %ul
+    %li
+%a{ href: '#mayoral-candidates' } Mayoral Candidates
+
+%link{ href: '//cdn.leafletjs.com/leaflet-0.7/leaflet.css', rel: 'stylesheet' }
+%link{ href: '//fonts.googleapis.com/css?family=Roboto', rel:"stylesheet" }
+%script{src: "//cdn.leafletjs.com/leaflet-0.7/leaflet.js"}
+
+%div#select
+  Select a candidate:
+  %select#candidate
+    %option
+  %div#legend
+
+%div#bubble-text
+%div#nut
+
+%section#main
+  %div#bubble
+  %div#map
+
+%script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"}
+%script{src: "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"}
+%script{src: "/js/vendor/queue.min.js"}
+%script{src: "/js/bubble.js"}
+
+

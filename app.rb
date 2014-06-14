@@ -32,6 +32,11 @@ get '/' do
   }
 end
 
+# The homepage
+get '/dash/' do
+  haml :dash, :layout => :openlayout, locals: {}
+end
+
 # TODO: Rename to /candidate/:slug ?
 #
 # This is the candidate page, i.e. the page which summarizes each candidate's
