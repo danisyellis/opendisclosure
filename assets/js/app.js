@@ -1,4 +1,4 @@
-OpenDisclosure.App = Backbone.Router.extend({
+dOpenDisclosure.App = Backbone.Router.extend({
   routes: {
     '/': 'home',
     'candidate/:id': 'candidate',
